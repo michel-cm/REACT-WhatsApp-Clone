@@ -10,6 +10,7 @@ import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import ChatIcon from "@mui/icons-material/Chat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
+import Login from "./components/Login/Login";
 
 function App() {
   const [chatlist, setChatList] = useState([
@@ -34,17 +35,27 @@ function App() {
       image: "https://www.w3schools.com/w3images/avatar5.png",
     },
   ]);
-  const [activeChat, setActiveChat] = useState({});
-  const [ user, setUser] = useState({
-    id: 1234,
-    avatar: 'https://www.w3schools.com/w3images/avatar5.png',
-    name: 'Michel Correa'
-  });
 
+  const [activeChat, setActiveChat] = useState({});
+  const [ user, setUser] = useState(null);
   const[showNewChat, setShowNewChat] = useState(false);
 
   const handleNewChat = () => {
     setShowNewChat(true);
+  }
+
+  const handleLoginData = async (user) => {
+    let newUser = {
+      id: user.id,
+      name: user.displayName,
+      avatar: user.photoURL
+    };
+    //
+    setUser(newUser);
+  }
+
+  if(user == null) {
+    return (<Login onReceive={handleLoginData} />);
   }
 
   return (
