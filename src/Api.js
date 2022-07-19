@@ -6,6 +6,7 @@ import firebaseConfig from './firebaseConfig';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
+const auth = firebase.auth();
 
 export default {
     fbPopup: async () => {
