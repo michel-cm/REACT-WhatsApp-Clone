@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
+
 import "./ChatListItem.css";
 
 function ChatListItem({onClick, active, data}) {
+
+    const [ time, setTime] = useState('');
+
+    useEffect(() => {
+        if(data.lastMessageDate > 0) {
+            let d = new Date(data.lastMessageDate.seconds * 1000);
+            let hours = d.getHours();
+            let minutes = d.getMinutes();
+            hours = hours < 10 ? '0'+hours : hours;
+            minutes = minutes < 10 ? '0'+minutes : minutes;
+            setTime(`${hours}:${minutes}`);
+        }
+    }, [data]);
+
     return (
             <div 
             className={`chatListItem ${active?'active':''}`}
@@ -11,11 +26,11 @@ function ChatListItem({onClick, active, data}) {
                 <div className='chatListItem--lines'>
                     <div className='chatListItem--line'>
                         <div className='chatListItem--name'>{data.title}</div>
-                        <div className='chatListItem--date'>19:00</div>
+                        <div className='chatListItem--date'>{time}</div>
                     </div>
                     <div className='chatListItem--line'>
                         <div className='chatListItem--lastMsg'>
-                            <p>Opa, tudo bem ?Opa, tudo bem ?Opa, tu, tbem ?</p>
+                            <p>{data.lastMessage}</p>
                         </div>
                     </div>
                 </div>

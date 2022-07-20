@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
+import Api from './Api' ;
+
 import ChatListItem from "./components/ChatListItem/ChatListItem";
 import ChatIntro from "./components/ChatIntro/ChatIntro";
 import ChatWindow from "./components/ChatWindow/ChatWindow";
@@ -12,33 +14,24 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
 import Login from "./components/Login/Login";
 
+
 function App() {
-  const [chatlist, setChatList] = useState([
-    {
-      chatId: 1,
-      title: "Fulano de tal 1",
-      image: "https://www.w3schools.com/w3images/avatar5.png",
-    },
-    {
-      chatId: 2,
-      title: "Fulano de tal 2",
-      image: "https://www.w3schools.com/w3images/avatar5.png",
-    },
-    {
-      chatId: 3,
-      title: "Fulano de tal 3",
-      image: "https://www.w3schools.com/w3images/avatar5.png",
-    },
-    {
-      chatId: 4,
-      title: "Fulano de tal 4",
-      image: "https://www.w3schools.com/w3images/avatar5.png",
-    },
-  ]);
+  const [chatlist, setChatList] = useState([]);
 
   const [activeChat, setActiveChat] = useState({});
-  const [ user, setUser] = useState(null);
+  const [ user, setUser] = useState({
+    id:'sMhNjARe2I0bWEbY4oEo',
+    name: 'Michel Corrêa',
+    avatar: 'https://graph.facebook.com/5161660413953391/picture'
+  });
   const[showNewChat, setShowNewChat] = useState(false);
+
+  useEffect(() => {
+    if(user !== null) {
+      let unsub = Api.onChatList(user.id, setChatList);
+      return unsub;
+    }
+  }, [user])
 
   const handleNewChat = () => {
     setShowNewChat(true);
@@ -50,7 +43,7 @@ function App() {
       name: user.displayName,
       avatar: user.photoURL
     };
-    //
+    await Api.addUser(newUser);
     setUser(newUser);
   }
 
