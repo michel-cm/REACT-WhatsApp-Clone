@@ -72,6 +72,44 @@ const connectionFB = {
                 }
             }
         });
+    },
+    onChatContent:(chatId, setList, setUsers) => {
+        return db.collection('chats').doc(chatId).onSnapshot((doc)=>{
+            let data = doc.data();
+            setList(data.messages);
+            setUsers(data.users);
+        })
+    },
+      sendMessage: async (chatData, userID, type, body, users) =>  {
+        let dateNow = new Date();
+        db.collection('chats').doc(chatData.chatId).update({
+            messages: firebase.firestore.FieldValue.arrayUnion({
+                type,
+                author: userID,
+                body,
+                date: dateNow
+            })
+        });
+
+        for(let i in users) {
+            let u = await db.collection('users').doc(users[i]).get();
+            let uData = u.data();
+            if(uData.chats) {
+                let chats = [ ...uData.chats];
+
+                for(let e in chats) {
+                    if(chats[e].chatId == chatData.chatId) {
+                        chats[e].lastMessage = body;
+                        chats[e].lastMessageDate = dateNow;
+                    }
+                }
+
+                await db.collection('users').doc(users[i]).update({
+                    chats
+                })
+            }
+        }
+
     }
 };
 

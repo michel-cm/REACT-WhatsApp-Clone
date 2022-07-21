@@ -4,6 +4,8 @@ import "./ChatWindow.css";
 
 import MessageItem from "../MessageItem/MessageItem";
 
+import Api from '../../Api';
+
 import SearchIcon from "@mui/icons-material/Search";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -12,7 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import MicIcon from "@mui/icons-material/Mic";
 
-function ChatWindow({user}) {
+function ChatWindow({user, data}) {
 
   const body = useRef();
 
@@ -26,59 +28,14 @@ function ChatWindow({user}) {
   const [emojiOpen, setEmojiOpen] = useState(false);
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
-  const [list, setList] = useState([
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-    {author: 123, body: 'bla bla bla'},
-    {author: 123, body: 'bla bla'},
-    {author: 1234, body: 'bla bla bla  bla'},
-  ]);
+  const [list, setList] = useState([]);
+  const [ users, setUsers] = useState([]);
+
+  useEffect(() => {
+    setList([]);
+    let unsub = Api.onChatContent(data.chatId, setList, setUsers);
+    return unsub;
+  }, [data.chatId])
 
   useEffect(()=> {
     if(body.current.scrollHeight > body.current.offsetHeight) {
@@ -115,9 +72,19 @@ function ChatWindow({user}) {
     }
   }
 
-  const handleSendClick = () => {
-
+  const handleInputKeyUp = (e) => {
+    if(e.keyCode == 13) {
+      handleSendClick();
+    }
   }
+
+  const handleSendClick = () => {
+      if(text !== '') {
+        Api.sendMessage(data, user.id, 'text', text, users);
+        setText('');
+        setEmojiOpen(false);
+      }
+  } 
 
   return (
     <div className="chatWindow">
@@ -125,10 +92,10 @@ function ChatWindow({user}) {
         <div className="chatWindow--headerinfor">
           <img
             className="chatWindow--avatar"
-            src="https://www.w3schools.com/w3images/avatar5.png"
+            src={data.image}
             alt=""
           />
-          <div className="chatWindow--name">Michel Corrêa </div>
+          <div className="chatWindow--name">{data.title}</div>
         </div>
 
         <div className="chatWindow--headerbuttons">
@@ -190,6 +157,7 @@ function ChatWindow({user}) {
             placeholder="Digite uma mensagem"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyUp={handleInputKeyUp}
           />
         </div>
         <div className="chatWindow--pos">

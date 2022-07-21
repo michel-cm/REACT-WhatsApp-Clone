@@ -105,6 +105,7 @@ function App() {
         {activeChat.chatId !== undefined && 
         <ChatWindow 
           user = {user}
+          data={activeChat}
         />
         }
         {activeChat.chatId === undefined && <ChatIntro />}
