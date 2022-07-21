@@ -1,9 +1,6 @@
 Esta aplicação foi desenvolvida com as seguintes tecnologias:
 
-HTML 5
-CSS 3
-JavaScript
-React
+ReactJs
 Firebase
 
 Esta aplicação tem como intuito fortificar os conhecimentos adquiridos ao longo do estudo de `ReactJs`. 
