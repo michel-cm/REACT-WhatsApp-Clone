@@ -21,8 +21,8 @@ function App() {
   const [activeChat, setActiveChat] = useState({});
   const [ user, setUser] = useState({
     id:'sMhNjARe2I0bWEbY4oEo',
-    name: 'Michel Corrêa',
-    avatar: 'https://graph.facebook.com/5161660413953391/picture'
+    name: 'Fulano Teste',
+    avatar: 'https://static.vecteezy.com/ti/vetor-gratis/p1/2275847-avatar-masculino-perfil-icone-de-homem-caucasiano-sorridente-vetor.jpg'
   });
   const[showNewChat, setShowNewChat] = useState(false);
 
