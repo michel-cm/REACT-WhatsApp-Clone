@@ -13,8 +13,8 @@ Esta aplicação tem como intuito fortificar os conhecimentos adquiridos ao long
 
 ✔ Rode em sua máquina
 
-###Instale todas as dependências:
+- Instale todas as dependências:
 $ npm install
 
-###Inicie a aplicação:
+- Inicie a aplicação:
 $ npm start
