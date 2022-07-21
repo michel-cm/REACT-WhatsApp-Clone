@@ -7,8 +7,9 @@ Firebase
 
 Esta aplicação tem como intuito fortificar os conhecimentos adquiridos ao longo do estudo de `ReactJs`. 
 
-### Sistema de mensagens em tempo real, escrita por transcrição de áudio, método de login por Facebook.
-
+- Sistema de mensagens em tempo real 
+- escrita por transcrição de áudio
+- método de login por Facebook.
 
 ✔ Rode em sua máquina
 
