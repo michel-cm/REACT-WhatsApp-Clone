@@ -28,8 +28,7 @@ function NewChat({user, chatlist, show, setShow}) {
     const handleClose = () => {
         setShow(false);
     }
-
-    const[showNewChat, setShowNewChat] = useState(false);
+ 
 
     return (
         <div className='newChat' style={{left: show? 0 : -415}} >

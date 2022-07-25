@@ -62,8 +62,8 @@ const connectionFB = {
         });
     },
 
-    onChatList:(userID, setChatList) => {
-        return db.collection('users').doc(userID).onSnapshot((doc)=> {
+    onChatList:(userId, setChatList) => {
+        return db.collection('users').doc(userId).onSnapshot((doc)=> {
             if(doc.exists) {
                 let data = doc.data();
 
